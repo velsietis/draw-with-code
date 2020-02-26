@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SVG Spiral Example</title>
+    </head>
+    <body>
+        <svg id="svg-shapes" xmlns="http://www.w3.org/2000/svg" height="500" width="500">
+        </svg>
+        <script>
+            const svgNs = "http://www.w3.org/2000/svg"
+
+            const getDot = function(x, y, size, color){                
+                let circle = document.createElementNS(svgNs, "circle");
+                circle.setAttributeNS(null, 'cx', x );
+                circle.setAttributeNS(null, 'cy', y );
+                circle.setAttributeNS(null, 'r', size);
+                circle.setAttributeNS(null, 'style', `fill: ${color}; stroke: none; stroke-width: 1px;` );
+                return circle;
+            }
+
+            const getColor = function(index){
+                if(index <= 3){
+                    return '#32A0CC'
+                }
+                else if(index <= 12) {
+                    return '#DBBB45';
+                }
+                else if(index < 40) {
+                    return '#964A30'
+                }
+                else {
+                    return '#2C9E45'
+                }
+            }
+            
+            const getCoordinates = function(getRadius, theta) {
+                const radius = getRadius(theta);                    
+                    
+                const y = radius * Math.sin(theta);
+                const x = y === 0 ? radius : y / Math.tan(theta);
+
+                return { x, y };
+            }
+
+            const rotations = 18;
+            const steps = 0.4;
+            const stepAcceleration = 2.14;
+            const expansionRate = 3;
+            const shapes = document.getElementById( "svg-shapes" );
+
+            let i = 1;
+            for(let t = 0; t < Math.PI * 2 * rotations; t++){
+                const {x, y} = getCoordinates(theta => expansionRate * theta, Math.pow(t * 2 * Math.PI / steps, 1 / stepAcceleration));
+                var X = Math.round( x + 100) ;
+                var Y = Math.round( y + 100) ;
+                var size = 5;
+
+
+                console.log(X + ',' + Y)
+                const dot = getDot(X, Y, size, getColor(i++));
+                shapes.appendChild(dot);
+            } 
+
+
+
+
+
+
+        </script>
+    </body>
+</html>
